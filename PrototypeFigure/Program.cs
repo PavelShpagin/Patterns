@@ -15,17 +15,18 @@ namespace PrototypeFigure
             IFigure figure1 = new Rectangle(10, 20);
 			IFigure figure2 = new Circle(15);
 			IFigure figure3 = new Triangle(3, 4, 5);
-            IFigure clonedFigure = figure1.Clone();
+            IFigure clonedFigure = figure1;//.Clone();
             figure1.GetInfo();
             clonedFigure.GetInfo();
             clonedFigure = figure2.Clone();
 			figure2.GetInfo();
+            figure1 = new Circle(5);
 			clonedFigure.GetInfo();
             clonedFigure = figure3.Clone();
 			figure3.GetInfo();
 			clonedFigure.GetInfo();
 			Console.Read();
-        }
+		}
     }
 
     interface IFigure

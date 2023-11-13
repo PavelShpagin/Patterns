@@ -6,12 +6,14 @@ namespace AbstractFactory
     public abstract class Car
     {
         public abstract void Info();
-        public void Interact(Engine engine)
+        public void Interact(Engine engine, Wheels wheels)
         {
             Info();
             Console.WriteLine("Set Engine: ");
             engine.GetPower();
-        }
+			Console.WriteLine("Set Wheels: ");
+			wheels.GetWheels();
+		}
     }
 
     // ConcreteProductA1
@@ -74,12 +76,42 @@ namespace AbstractFactory
 		}
 	}
 
+	public abstract class Wheels
+	{
+		public virtual void GetWheels()
+		{
+		}
+	}
+	public class FordWheels : Wheels
+	{
+		public override void GetWheels()
+		{
+			Console.WriteLine("Ford Wheels");
+		}
+	}
+	public class ToyotaWheels : Wheels
+	{
+		public override void GetWheels()
+		{
+			Console.WriteLine("Toyota Wheels");
+		}
+	}
+
+	public class MersedesWheels : Wheels
+	{
+		public override void GetWheels()
+		{
+			Console.WriteLine("Mersedes Wheels");
+		}
+	}
+
 	// AbstractFactory
 	public interface ICarFactory
     {
         Car CreateCar();
         Engine CreateEngine();
-    }
+		Wheels CreateWheels();
+	}
 
     // ConcreteFactory1
     public class FordFactory : ICarFactory
@@ -94,7 +126,12 @@ namespace AbstractFactory
         {
             return new FordEngine();
         }
-    }
+
+		Wheels ICarFactory.CreateWheels()
+		{
+			return new FordWheels();
+		}
+	}
 
     // ConcreteFactory2
     public class ToyotaFactory : ICarFactory
@@ -109,7 +146,12 @@ namespace AbstractFactory
         {
             return new ToyotaEngine();
         }
-    }
+
+		Wheels ICarFactory.CreateWheels()
+		{
+			return new ToyotaWheels();
+		}
+	}
 
 	public class MersedesFactory : ICarFactory
 	{
@@ -123,26 +165,33 @@ namespace AbstractFactory
 		{
 			return new MersedesEngine();
 		}
+
+		Wheels ICarFactory.CreateWheels()
+		{
+			return new MersedesWheels();
+		}
 	}
 
 	public class ClientFactory
     {
         private Car car;
         private Engine engine;
+		private Wheels wheels;
 
-        public ClientFactory(ICarFactory factory)
+		public ClientFactory(ICarFactory factory)
         {
             //Абстрагування процесів інстанціювання
             car = factory.CreateCar();
             engine = factory.CreateEngine();
-        }
+			wheels = factory.CreateWheels();
+		}
 
         public void Run()
         {
             car.GetType();
             //Абстрагування варіантів використання
-            car.Interact(engine);
-        }
+            car.Interact(engine, wheels);
+		}
     }
 
     class AbstractFactoryApp
